@@ -1,69 +1,85 @@
 import tonos_ts4.ts4 as ts4
 
-class Casino(ts4.BaseContract):
+class CasinoClient(ts4.BaseContract):
     def __init__(
         self, 
         *,
-        casino_assurance: int, 
-        minimal_bet: int, 
         owner_wallet: ts4.Address,
         override_address = None,
     ):
         super().__init__(
-            'casino',
+            'CasinoClient',
             dict(
-                casinoAssurance=casino_assurance,
-                minimalBet=minimal_bet,
-                ownerWallet=owner_wallet,
+                casino=owner_wallet
             ),
             override_address=override_address,
             keypair=ts4.make_keypair()
         )
     
-    def casino_assurance(self):
-        self.call_getter('casino_assurance')
-
-    def minimal_bet(self):
-        return self.minimal_bet
     
-    def single_bet(self, number):
+    def single_bet(self, value, number):
         self.call_method(
-            'singleBet',
-            dict(number=number),
+            'bet',
+            dict(
+                value=value,
+                number=number,
+            ),
             private_key=self.private_key_,
         )
     
-    def dozen_bet(self, number):
+    def dozen_bet(self, value, number):
         self.call_method(
-            'dozenBet',
-            dict(number=number),
+            'betDozen',
+            dict(
+                value=value,
+                number=number,
+            ),
             private_key=self.private_key_,
         )
 
-    def column_bet(self, number):
+    def column_bet(self, value, number):
         self.call_method(
-            'columnBet',
-            dict(number=number),
+            'betColumn',
+            dict(
+                value=value,
+                number=number,
+            ),
             private_key=self.private_key_,
         )
 
-    def great_small_bet(self, is_great: bool):
+    def great_small_bet(self, value, is_great: bool):
         self.call_method(
-            'greatSmallBet',
-            dict(isGreat=is_great),
+            'betGreatSmall',
+            dict(
+                value=value,
+                isGreat=is_great,
+            ),
             private_key=self.private_key_,
         )
 
-    def parity_bet(self, is_even: bool):
+    def parity_bet(self, value, is_even: bool):
         self.call_method(
-            'parityBet',
-            dict(isEven=is_even),
+            'betParity',
+            dict(
+                value=value,
+                isEven=is_even,
+            ),
             private_key=self.private_key_,
         )
     
-    def color_bet(self, is_red: bool):
+    def color_bet(self, value, is_red: bool):
         self.call_method(
-            'colorBet',
-            dict(isRed=is_red),
+            'betColor',
+            dict(
+                value=value,
+                isRed=is_red,
+            ),
             private_key=self.private_key_,
+        )
+
+    def balance(self):
+        self.call_getter_raw(
+            'balance',
+            {},
+            0,
         )

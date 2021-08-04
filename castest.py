@@ -1,5 +1,5 @@
 import tonos_ts4.ts4 as ts4
-from casino import Casino
+from casino import CasinoClient
 
 
 ts4.init('./', verbose = False)
@@ -14,14 +14,16 @@ casino_client = ts4.BaseContract(
     keypair=ts4.make_keypair()
 )
 
-casino = Casino(
-    casino_assurance=4000, 
-    minimal_bet=100, 
+casino = CasinoClient(
     owner_wallet=casino_client.address, 
     override_address=addr
 )
 
 
-casino.single_bet(17)
+casino.single_bet(100, 17)
 
+casino.dozen_bet(100, 1)
 
+casino.color_bet(100, False)
+
+print(casino.balance)
